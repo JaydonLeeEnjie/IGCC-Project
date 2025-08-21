@@ -913,8 +913,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   battleManager: {fileID: 205548514}
+  playerInput: {fileID: 205548516}
   bulletLayerName: Bullet
   requireLayerMatch: 1
+  parryBufferSeconds: 0.15
+  allowHoldAtImpact: 1
+  jumpActionName: Jump
 --- !u!50 &431650549
 Rigidbody2D:
   serializedVersion: 5
