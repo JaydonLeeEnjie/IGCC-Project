@@ -176,3 +176,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lifeSeconds: 6
+  NormalColour: {r: 1, g: 1, b: 1, a: 1}
+  DontHitColour: {r: 0, g: 0.5342083, b: 1, a: 1}
+  WeakColour: {r: 0.015443802, g: 1, b: 0, a: 1}
+  RingColour: {r: 1, g: 0.09641263, b: 0, a: 1}
+  BulletSprite: {fileID: 3430037146120149}

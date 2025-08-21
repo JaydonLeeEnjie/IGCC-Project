@@ -137,16 +137,32 @@ public class Enemy : MonoBehaviour
         var prefab = bulletPrefabs.Count > 0 ? bulletPrefabs[idx] : null;
         if (prefab == null) return;
 
-        float baseZ = center.eulerAngles.z;
-        float worldAngle = baseZ + data.Angle + clockOffsetDeg;
-        Vector3 dir = Quaternion.Euler(0f, 0f, worldAngle) * Vector3.right;
-        Vector3 spawnPos = center.position + dir.normalized * spawnRadius;
+        GameObject go;
+        Vector3 dir; // reuse for non-ring
 
-        var go = Instantiate(prefab, spawnPos, Quaternion.identity);
+        if (data.Type == BulletData.BulletType.Ring)
+        {
+            // Spawn exactly at the clock center
+            go = Instantiate(prefab, center.position, Quaternion.identity);
+            // direction is irrelevant for rings; pass any vector, Init will ignore for ring
+            dir = Vector3.right;
+        }
+        else
+        {
+            // Compute world angle normally for traveling bullets
+            float baseZ = center.eulerAngles.z;
+            float worldAngle = baseZ + data.Angle + clockOffsetDeg;
+            dir = Quaternion.Euler(0f, 0f, worldAngle) * Vector3.right;
+
+            // spawn on the ring around the center (your previous behavior)
+            Vector3 spawnPos = center.position + dir.normalized * spawnRadius;
+            go = Instantiate(prefab, spawnPos, Quaternion.identity);
+        }
+
         var bullet = go.GetComponent<Bullet>();
         if (bullet != null)
             bullet.Init(dir, data.Speed, data.Damage, data.Type);
         else
-            go.transform.right = dir;
+            go.transform.right = dir; // at least orient non-ring
     }
 }

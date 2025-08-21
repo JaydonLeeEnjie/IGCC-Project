@@ -4,7 +4,7 @@ using UnityEngine;
 [Serializable]
 public class BulletData
 {
-    public enum BulletType { Normal, DontHit }
+    public enum BulletType { Normal, DontHit, Weak, Ring }
 
     [Header("Bullet")]
     [SerializeField] private BulletType bulletType = BulletType.Normal;

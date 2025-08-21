@@ -38,4 +38,28 @@ MonoBehaviour:
     speed: 5
     angle: 270
     damage: 2
-  AttackSequenceEnd: 10
+  - bulletType: 2
+    bulletPrefab: 0
+    spawnTime: 5
+    speed: 5
+    angle: 0
+    damage: 2
+  - bulletType: 2
+    bulletPrefab: 0
+    spawnTime: 5
+    speed: 5
+    angle: 30
+    damage: 2
+  - bulletType: 2
+    bulletPrefab: 0
+    spawnTime: 5
+    speed: 5
+    angle: -30
+    damage: 2
+  - bulletType: 3
+    bulletPrefab: 1
+    spawnTime: 6
+    speed: 8
+    angle: -30
+    damage: 2
+  AttackSequenceEnd: 12
