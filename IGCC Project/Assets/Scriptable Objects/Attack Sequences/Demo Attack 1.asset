@@ -20,46 +20,54 @@ MonoBehaviour:
     speed: 5
     angle: 0
     damage: 2
+    ringTriggerScale: 0
   - bulletType: 0
     bulletPrefab: 0
     spawnTime: 2
     speed: 5
     angle: 90
     damage: 2
+    ringTriggerScale: 0
   - bulletType: 0
     bulletPrefab: 0
     spawnTime: 3
     speed: 5
     angle: 180
     damage: 2
+    ringTriggerScale: 0
   - bulletType: 0
     bulletPrefab: 0
     spawnTime: 4
     speed: 5
     angle: 270
     damage: 2
+    ringTriggerScale: 0
   - bulletType: 2
     bulletPrefab: 0
     spawnTime: 5
     speed: 5
     angle: 0
     damage: 2
+    ringTriggerScale: 0
   - bulletType: 2
     bulletPrefab: 0
     spawnTime: 5
     speed: 5
     angle: 30
     damage: 2
+    ringTriggerScale: 0
   - bulletType: 2
     bulletPrefab: 0
     spawnTime: 5
     speed: 5
     angle: -30
     damage: 2
+    ringTriggerScale: 0
   - bulletType: 3
     bulletPrefab: 1
     spawnTime: 6
     speed: 8
     angle: -30
     damage: 2
+    ringTriggerScale: 6.25
   AttackSequenceEnd: 12

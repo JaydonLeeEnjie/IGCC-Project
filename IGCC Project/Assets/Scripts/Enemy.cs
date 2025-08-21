@@ -161,7 +161,7 @@ public class Enemy : MonoBehaviour
 
         var bullet = go.GetComponent<Bullet>();
         if (bullet != null)
-            bullet.Init(dir, data.Speed, data.Damage, data.Type);
+            bullet.Init(dir, data.Speed, data.Damage, data.Type, data.Ring);
         else
             go.transform.right = dir; // at least orient non-ring
     }

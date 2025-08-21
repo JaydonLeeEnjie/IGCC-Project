@@ -154,4 +154,16 @@ public class PlayerHitBox : MonoBehaviour
         if (resizeSpeed < 0f)
             resizeSpeed = 0f;
     }
+
+    public void PlayParrySFX(Vector3 at)
+    {
+        if (ParrySound == null) return;
+
+        // Prefer the assigned AudioSource if available
+        if (audioSource != null)
+        {
+            audioSource.PlayOneShot(ParrySound);
+        }
+
+    }
 }

@@ -8,7 +8,7 @@ public class BulletData
 
     [Header("Bullet")]
     [SerializeField] private BulletType bulletType = BulletType.Normal;
-    [SerializeField] private int bulletPrefab;   // index into Enemy.bulletPrefabs
+    [SerializeField] private int bulletPrefab;
 
     [Header("Timing")]
     [Min(0f)][SerializeField] private float spawnTime;
@@ -17,6 +17,7 @@ public class BulletData
     [Header("Stats")]
     [Range(-360f, 360f)][SerializeField] private float angle;
     [Min(0f)][SerializeField] private float damage;
+    [SerializeField] private float ringTriggerScale;
 
     public BulletType Type => bulletType;
     public int BulletPrefabIndex => bulletPrefab;
@@ -24,4 +25,5 @@ public class BulletData
     public float Speed => speed;
     public float Angle => angle;
     public float Damage => damage;
+    public float Ring => ringTriggerScale;
 }

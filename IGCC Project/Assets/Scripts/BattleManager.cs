@@ -21,6 +21,8 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private Image Healthbar;
     [SerializeField] private GameObject Options;
     [SerializeField] private Enemy enemy;
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip HitSound;
 
     [Header("QTE UI")]
     [SerializeField] private GameObject QTE;
@@ -194,6 +196,7 @@ public class BattleManager : MonoBehaviour
 
         Healthbar.fillAmount = (maxHealth > 0f) ? (currentHealth / maxHealth) : 0f;
         hasBeenHit = true;
+        audioSource.PlayOneShot(HitSound);
     }
 
     // =========================
