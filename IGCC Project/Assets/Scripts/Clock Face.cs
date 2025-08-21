@@ -33,6 +33,7 @@ public class ClockFace : MonoBehaviour
         {
             case BulletData.BulletType.Normal:
             case BulletData.BulletType.Weak:
+            case BulletData.BulletType.Click:
                 battleManager?.TakeDamage(bullet.Damage);
                 Destroy(root);
                 break;
@@ -41,9 +42,6 @@ public class ClockFace : MonoBehaviour
                 Destroy(root);
                 break;
 
-            case BulletData.BulletType.Ring:
-                // Ring is resolved by its own scale threshold inside Bullet.cs
-                break;
         }
     }
 }

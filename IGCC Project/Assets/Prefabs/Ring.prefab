@@ -170,4 +170,8 @@ MonoBehaviour:
   DontHitColour: {r: 0, g: 0.5342083, b: 1, a: 1}
   WeakColour: {r: 0.015443802, g: 1, b: 0, a: 1}
   RingColour: {r: 1, g: 0.09803922, b: 0, a: 1}
+  ClickColour: {r: 1, g: 0.54901963, b: 0, a: 1}
   BulletSprite: {fileID: 2015851326515344958}
+  ringTriggerScale: 0
+  ringAllowHold: 1
+  ringDebug: 0

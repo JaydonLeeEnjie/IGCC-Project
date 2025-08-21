@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.InputSystem; // for Keyboard
+using UnityEngine.InputSystem;
 
 public class Bullet : MonoBehaviour
 {
@@ -10,6 +10,7 @@ public class Bullet : MonoBehaviour
     [SerializeField] private Color DontHitColour;
     [SerializeField] private Color WeakColour;
     [SerializeField] private Color RingColour;
+    [SerializeField] private Color ClickColour;
     [SerializeField] private SpriteRenderer BulletSprite;
 
     [Header("Ring Settings")]
@@ -19,6 +20,9 @@ public class Bullet : MonoBehaviour
     [SerializeField] private bool ringAllowHold = true;
     [SerializeField] private bool ringDebug = false;
 
+    [Header("Click Settings")]
+    [SerializeField] private float clickColliderSizeMultiplier = 1.5f; // Make click bullets easier to hit
+
     public BulletData.BulletType Type { get; private set; }
     public float Damage { get; private set; }
 
@@ -26,12 +30,16 @@ public class Bullet : MonoBehaviour
     private float shrinkSpeed;  // ring
     private bool ringResolved;  // ring: ensure single resolution
     private BattleManager bm;   // to apply damage when ring fails
-    private PlayerHitBox playerHB;   // NEW: to play parry SFX
+    private PlayerHitBox playerHB; // for parry SFX
+    private Camera mainCam;
+    private Collider2D col2d;
 
     private void Awake()
     {
         bm = FindObjectOfType<BattleManager>();
-        playerHB = FindObjectOfType<PlayerHitBox>(); // cache once; or expose as [SerializeField] if you prefer
+        playerHB = FindObjectOfType<PlayerHitBox>();
+        mainCam = Camera.main;
+        col2d = GetComponent<Collider2D>();
     }
 
     public void Init(Vector3 worldDirection, float speed, float damage, BulletData.BulletType type, float ringtriggerscale)
@@ -47,12 +55,23 @@ public class Bullet : MonoBehaviour
             case BulletData.BulletType.DontHit: BulletSprite.color = DontHitColour; break;
             case BulletData.BulletType.Weak: BulletSprite.color = WeakColour; break;
             case BulletData.BulletType.Ring: BulletSprite.color = RingColour; break;
+            case BulletData.BulletType.Click:
+                BulletSprite.color = ClickColour;
+                // Increase collider size for click bullets to make them easier to hit
+                if (col2d is CircleCollider2D circleCollider)
+                {
+                    circleCollider.radius *= clickColliderSizeMultiplier;
+                }
+                else if (col2d is BoxCollider2D boxCollider)
+                {
+                    boxCollider.size *= clickColliderSizeMultiplier;
+                }
+                break;
         }
 
         if (Type == BulletData.BulletType.Ring)
         {
-            // interpret 'speed' as scale-units per second
-            shrinkSpeed = Mathf.Max(0f, speed);
+            shrinkSpeed = Mathf.Max(0f, speed); // scale-units/sec
             ringResolved = false;
 
             if (ringDebug)
@@ -62,7 +81,7 @@ public class Bullet : MonoBehaviour
             return; // rings don't translate
         }
 
-        // Non-ring movement toward clock
+        // Non-ring translation
         worldDirection.Normalize();
         transform.right = -worldDirection; // face travel dir (+X)
         velocity = worldDirection * -speed;
@@ -72,6 +91,23 @@ public class Bullet : MonoBehaviour
 
     private void Update()
     {
+        // CLICK bullet: delete on LMB if cursor overlaps this collider
+        if (Type == BulletData.BulletType.Click)
+        {
+            if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame && col2d != null)
+            {
+                Vector2 screenPos = Mouse.current.position.ReadValue();
+                Ray ray = mainCam.ScreenPointToRay(screenPos);
+                RaycastHit2D hit = Physics2D.GetRayIntersection(ray, Mathf.Infinity);
+
+                if (hit.collider != null && hit.collider == col2d)
+                {
+                    Destroy(gameObject);
+                    return;
+                }
+            }
+        }
+
         if (Type == BulletData.BulletType.Ring)
         {
             // shrink uniformly X/Y
@@ -95,13 +131,11 @@ public class Bullet : MonoBehaviour
 
                 if (spacePressed)
                 {
-                    // success
                     playerHB?.PlayParrySFX(transform.position);
                     Destroy(gameObject);
                 }
                 else
                 {
-                    // fail: damage then destroy
                     bm?.TakeDamage(Damage);
                     Destroy(gameObject);
                 }
