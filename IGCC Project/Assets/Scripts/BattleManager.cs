@@ -133,7 +133,10 @@ public class BattleManager : MonoBehaviour
             Options.SetActive(true);
             return;
         }
-
+        if(currentAction == ActionType.Attack)
+        {
+            enemy.TakeDamage(currentAttack);  // was: enemy.Health -= currentAttack;
+        }
         enemy.RunAttackSequence(sequence, ClockCenter, clockAngleOffsetForBullets, OnEnemySequenceComplete);
     }
 
@@ -141,13 +144,33 @@ public class BattleManager : MonoBehaviour
     {
         inCombat = false;
         Options.SetActive(true);
+        if(currentAction == ActionType.Parry && !hasBeenHit)
+        {
+            enemy.TakeDamage(currentAttack * 3f); // was: enemy.Health -= currentAttack * 3;
+        }
+        else if(currentAction == ActionType.Heal && !hasBeenHit)
+        {
+            currentHealth = Mathf.Min(maxHealth, currentHealth + 20);
+            Healthbar.fillAmount = (maxHealth > 0f) ? (currentHealth / maxHealth) : 0f;
+        }
+        hasBeenHit = false;
     }
 
     public void TakeDamage(float amount)
     {
-        currentHealth = Mathf.Max(0f, currentHealth - amount);
+        if (currentAction == ActionType.Defend)
+        {
+            currentHealth = Mathf.Max(0f, currentHealth - (amount/2));
+        }
+        else if(currentAction == ActionType.Heal)
+        {
+            currentHealth = Mathf.Max(0f, currentHealth - (amount * 2));
+        }
+        else
+        {
+            currentHealth = Mathf.Max(0f, currentHealth - amount);
+        }
         Healthbar.fillAmount = (maxHealth > 0f) ? (currentHealth / maxHealth) : 0f;
         hasBeenHit = true;
-        // Optional: hit VFX/SFX, death check, etc.
     }
 }
