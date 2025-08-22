@@ -6,12 +6,10 @@ public class ClockFace : MonoBehaviour
     [SerializeField] private BattleManager battleManager;
     [SerializeField] private string bulletLayerName = "Bullet";
 
-
     private int bulletLayer;
 
     private void Awake()
     {
-        // Ensure THIS collider is a trigger
         var col = GetComponent<Collider2D>();
         if (col && !col.isTrigger)
             Debug.LogWarning("[ClockFace] Collider2D should be set as Trigger.");
@@ -34,6 +32,7 @@ public class ClockFace : MonoBehaviour
             case BulletData.BulletType.Normal:
             case BulletData.BulletType.Weak:
             case BulletData.BulletType.Click:
+            case BulletData.BulletType.Hold: // NEW: hitting clock hurts
                 battleManager?.TakeDamage(bullet.Damage);
                 Destroy(root);
                 break;
@@ -42,6 +41,9 @@ public class ClockFace : MonoBehaviour
                 Destroy(root);
                 break;
 
+            case BulletData.BulletType.Ring:
+                // Ring resolves in Bullet.cs by scale threshold
+                break;
         }
     }
 }

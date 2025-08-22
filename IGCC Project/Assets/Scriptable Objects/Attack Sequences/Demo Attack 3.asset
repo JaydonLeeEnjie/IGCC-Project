@@ -1,0 +1,125 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56da2f4a063b6fc40a9abe6f18b04573, type: 3}
+  m_Name: Demo Attack 3
+  m_EditorClassIdentifier: 
+  Name: Demo Attack 3
+  projectiles:
+  - bulletType: 2
+    bulletPrefab: 0
+    spawnTime: 0
+    speed: 3
+    angle: 0
+    damage: 2
+    ringTriggerScale: 0
+    holdCount: 0
+    holdSpacingUnits: 0
+  - bulletType: 2
+    bulletPrefab: 0
+    spawnTime: 0
+    speed: 3
+    angle: -30
+    damage: 2
+    ringTriggerScale: 0
+    holdCount: 0
+    holdSpacingUnits: 0
+  - bulletType: 2
+    bulletPrefab: 0
+    spawnTime: 0
+    speed: 3
+    angle: 30
+    damage: 2
+    ringTriggerScale: 0
+    holdCount: 0
+    holdSpacingUnits: 0
+  - bulletType: 2
+    bulletPrefab: 0
+    spawnTime: 3
+    speed: 3
+    angle: 90
+    damage: 2
+    ringTriggerScale: 0
+    holdCount: 0
+    holdSpacingUnits: 0
+  - bulletType: 2
+    bulletPrefab: 0
+    spawnTime: 3
+    speed: 3
+    angle: 60
+    damage: 2
+    ringTriggerScale: 0
+    holdCount: 0
+    holdSpacingUnits: 0
+  - bulletType: 2
+    bulletPrefab: 0
+    spawnTime: 3
+    speed: 3
+    angle: 120
+    damage: 2
+    ringTriggerScale: 0
+    holdCount: 0
+    holdSpacingUnits: 0
+  - bulletType: 2
+    bulletPrefab: 0
+    spawnTime: 6
+    speed: 3
+    angle: 180
+    damage: 2
+    ringTriggerScale: 0
+    holdCount: 0
+    holdSpacingUnits: 0
+  - bulletType: 2
+    bulletPrefab: 0
+    spawnTime: 6
+    speed: 3
+    angle: 150
+    damage: 2
+    ringTriggerScale: 0
+    holdCount: 0
+    holdSpacingUnits: 0
+  - bulletType: 2
+    bulletPrefab: 0
+    spawnTime: 6
+    speed: 3
+    angle: 210
+    damage: 2
+    ringTriggerScale: 0
+    holdCount: 0
+    holdSpacingUnits: 0
+  - bulletType: 2
+    bulletPrefab: 0
+    spawnTime: 9
+    speed: 3
+    angle: 270
+    damage: 2
+    ringTriggerScale: 0
+    holdCount: 0
+    holdSpacingUnits: 0
+  - bulletType: 2
+    bulletPrefab: 0
+    spawnTime: 9
+    speed: 3
+    angle: 240
+    damage: 2
+    ringTriggerScale: 0
+    holdCount: 0
+    holdSpacingUnits: 0
+  - bulletType: 2
+    bulletPrefab: 0
+    spawnTime: 9
+    speed: 3
+    angle: 300
+    damage: 2
+    ringTriggerScale: 0
+    holdCount: 0
+    holdSpacingUnits: 0
+  AttackSequenceEnd: 14

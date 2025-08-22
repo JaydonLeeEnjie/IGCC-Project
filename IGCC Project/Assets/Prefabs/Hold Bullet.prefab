@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2600433125037259961
+--- !u!1 &1555417710116381287
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,25 +8,25 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4507767047296078366}
-  - component: {fileID: 3430037146120149}
-  - component: {fileID: 657242875604473462}
-  - component: {fileID: 2458430456929013096}
-  - component: {fileID: 6113081788045002677}
+  - component: {fileID: 1784443349969257806}
+  - component: {fileID: 447899630112284012}
+  - component: {fileID: 3456090945485251426}
+  - component: {fileID: 7029687379252814413}
+  - component: {fileID: 2956448088130831150}
   m_Layer: 3
-  m_Name: Normal Bullet
+  m_Name: Hold Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4507767047296078366
+--- !u!4 &1784443349969257806
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2600433125037259961}
+  m_GameObject: {fileID: 1555417710116381287}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.9, y: 0.97, z: -7.19}
@@ -35,13 +35,13 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &3430037146120149
+--- !u!212 &447899630112284012
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2600433125037259961}
+  m_GameObject: {fileID: 1555417710116381287}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -79,24 +79,24 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: d3ea17a886d9abb42aa6c5652f1173de, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f0f72af4207b2614dba6d5cbb784ceb1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.35, y: 1.62}
+  m_Size: {x: 3.66, y: 6.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &657242875604473462
+--- !u!61 &3456090945485251426
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2600433125037259961}
+  m_GameObject: {fileID: 1555417710116381287}
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
@@ -124,26 +124,26 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.07, y: -0.08}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.35, y: 1.62}
-    newSize: {x: 2.35, y: 1.62}
+    oldSize: {x: 3.66, y: 6.5}
+    newSize: {x: 3.66, y: 6.5}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.9, y: 1.08}
+  m_Size: {x: 2.08, y: 1.4}
   m_EdgeRadius: 0
---- !u!50 &2458430456929013096
+--- !u!50 &7029687379252814413
 Rigidbody2D:
   serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2600433125037259961}
+  m_GameObject: {fileID: 1555417710116381287}
   m_BodyType: 2
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
@@ -163,13 +163,13 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &6113081788045002677
+--- !u!114 &2956448088130831150
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2600433125037259961}
+  m_GameObject: {fileID: 1555417710116381287}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9723e18fa2ddf274cb854aef854da6f3, type: 3}
@@ -182,7 +182,7 @@ MonoBehaviour:
   RingColour: {r: 1, g: 0.09641263, b: 0, a: 1}
   ClickColour: {r: 1, g: 0.5479377, b: 0, a: 1}
   HoldColour: {r: 1, g: 1, b: 0, a: 1}
-  BulletSprite: {fileID: 3430037146120149}
+  BulletSprite: {fileID: 447899630112284012}
   ringTriggerScale: 0
   ringAllowHold: 1
   ringDebug: 0

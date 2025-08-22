@@ -565,7 +565,7 @@ MonoBehaviour:
   inCombat: 0
   hasBeenHit: 0
   currentAction: 0
-  rotationSmoothing: 10
+  rotationSmoothing: 5
   PlayerHitBox: {fileID: 431650544}
 --- !u!4 &205548515
 Transform:
@@ -1343,6 +1343,7 @@ MonoBehaviour:
   normalHitBoxSize: 0.8
   largeHitBoxSize: 2.5
   resizeSpeed: 20
+  l2Threshold: 0.5
 --- !u!50 &431650549
 Rigidbody2D:
   serializedVersion: 5
@@ -1705,10 +1706,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackPattern:
+  - {fileID: 11400000, guid: 7227069066dd048439358927520738e5, type: 2}
   - {fileID: 11400000, guid: 573b77cb121781c429badc03f3b4a808, type: 2}
+  - {fileID: 11400000, guid: 5260b5858ff822849a32928889eaa64f, type: 2}
+  - {fileID: 11400000, guid: f6cb9337932e63a46bf0af5a29acb38c, type: 2}
+  - {fileID: 11400000, guid: 2d8420bbe8b853f409f1f729de3c7df6, type: 2}
+  - {fileID: 11400000, guid: 939f00357492b8e4e830ef39766fd4c3, type: 2}
   bulletPrefabs:
   - {fileID: 2600433125037259961, guid: 021820273033ece45ae2b951d8bd4029, type: 3}
   - {fileID: 8829942511753953119, guid: b92de42a9c37c5b46816d2aa5a575d75, type: 3}
+  - {fileID: 1555417710116381287, guid: cda5ea3b20fe1b84c8cc71dadf0f2910, type: 3}
   currentHealth: 0
   maxHealth: 100
   spawnRadius: 10

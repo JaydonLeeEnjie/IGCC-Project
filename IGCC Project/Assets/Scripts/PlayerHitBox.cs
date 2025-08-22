@@ -21,31 +21,32 @@ public class PlayerHitBox : MonoBehaviour
     [SerializeField] private string jumpActionName = "Jump";
 
     [Header("HitBox Sizing (X only, localScale.x ABSOLUTE values)")]
-    [SerializeField] private float normalHitBoxSize = 1f; // localScale.x when not holding RMB
-    [SerializeField] private float largeHitBoxSize = 2f; // localScale.x when holding RMB
-    [SerializeField] private float resizeSpeed = 20f;     // higher = snappier
+    [SerializeField] private float normalHitBoxSize = 1f;
+    [SerializeField] private float largeHitBoxSize = 2f;
+    [SerializeField] private float resizeSpeed = 20f;
+
+    [Header("Hold (L2) Settings")]
+    [Tooltip("Trigger value (0..1) above which L2 counts as 'held'.")]
+    [SerializeField] private float l2Threshold = 0.5f;
 
     private int bulletLayer = -1;
     private InputAction jumpAction;
     private float parryTimer;
 
-    private Vector3 baseScale;    // cached Y/Z to preserve
-    private float currentX;       // interpolated localScale.x
+    private Vector3 baseScale;
+    private float currentX;
 
     private void Awake()
     {
-        // Collider sanity
         var col = GetComponent<Collider2D>();
         if (col && !col.isTrigger)
             Debug.LogWarning("[PlayerHitBox] Collider2D is not set as Trigger.");
 
         bulletLayer = LayerMask.NameToLayer(bulletLayerName);
 
-        // Cache initial scale
         baseScale = transform.localScale;
         currentX = baseScale.x;
 
-        // Optional: if you want the normal size to match the current object scale in editor
         if (Mathf.Approximately(normalHitBoxSize, 0f))
             normalHitBoxSize = baseScale.x;
     }
@@ -74,27 +75,22 @@ public class PlayerHitBox : MonoBehaviour
     {
         if (battleManager.inCombat)
         {
-            // Right mouse ONLY controls enlargement of localScale.x
             bool rightMouseHeld = Mouse.current != null && Mouse.current.rightButton.isPressed;
             float targetX = rightMouseHeld ? largeHitBoxSize : normalHitBoxSize;
-
-            // Smoothly lerp localScale.x
             currentX = Mathf.MoveTowards(currentX, targetX, resizeSpeed * Time.unscaledDeltaTime);
             transform.localScale = new Vector3(currentX, baseScale.y, baseScale.z);
         }
         else
         {
-            transform.localScale = new Vector3(normalHitBoxSize , baseScale.y, baseScale.z);
+            transform.localScale = new Vector3(normalHitBoxSize, baseScale.y, baseScale.z);
         }
 
-        // Spacebar-only parry buffer countdown
         if (parryTimer > 0f)
             parryTimer -= Time.unscaledDeltaTime;
     }
 
     private void OnJumpPerformed(InputAction.CallbackContext ctx)
     {
-        // Only accept keyboard Space as the source of the action
         if (ctx.control is KeyControl key && key.keyCode == Key.Space)
             parryTimer = parryBufferSeconds;
     }
@@ -124,9 +120,9 @@ public class PlayerHitBox : MonoBehaviour
 
                     if (pressedRecently || heldNow)
                     {
-                        Destroy(hitGO);   // parry success
-                        parryTimer = 0f;  // consume buffer (optional)
-                        audioSource.PlayOneShot(ParrySound);
+                        Destroy(hitGO);
+                        parryTimer = 0f;
+                        audioSource?.PlayOneShot(ParrySound);
                     }
                     break;
                 }
@@ -134,7 +130,7 @@ public class PlayerHitBox : MonoBehaviour
             case BulletData.BulletType.Weak:
                 {
                     Destroy(hitGO);
-                    audioSource.PlayOneShot(ParrySound);
+                    audioSource?.PlayOneShot(ParrySound);
                     break;
                 }
 
@@ -144,7 +140,42 @@ public class PlayerHitBox : MonoBehaviour
                     Destroy(hitGO);
                     break;
                 }
+
+            case BulletData.BulletType.Hold:   // NEW
+                {
+                    // Only defend if L2 (left trigger) is held on the paired gamepad
+                    if (IsL2Held())
+                    {
+                        Destroy(hitGO);                 // defended successfully
+                        audioSource?.PlayOneShot(ParrySound);
+                    }
+                    else
+                    {
+                        battleManager?.TakeDamage(bullet.Damage); // not blocking  damage
+                        Destroy(hitGO);
+                    }
+                    break;
+                }
         }
+    }
+
+    private bool IsL2Held()
+    {
+        // Prefer the gamepad paired to this PlayerInput
+        Gamepad gp = null;
+        if (playerInput != null)
+        {
+            foreach (var dev in playerInput.devices)
+            {
+                if (dev is Gamepad g) { gp = g; break; }
+            }
+        }
+        if (gp == null) gp = Gamepad.current; // fallback
+
+        if (gp == null) return false; // no controller -> cannot block
+
+        // leftTrigger returns 0..1; consider held if above threshold
+        return gp.leftTrigger.ReadValue() >= l2Threshold;
     }
 
     private void OnValidate()
@@ -153,17 +184,13 @@ public class PlayerHitBox : MonoBehaviour
             largeHitBoxSize = normalHitBoxSize;
         if (resizeSpeed < 0f)
             resizeSpeed = 0f;
+
+        l2Threshold = Mathf.Clamp01(l2Threshold);
     }
 
     public void PlayParrySFX(Vector3 at)
     {
         if (ParrySound == null) return;
-
-        // Prefer the assigned AudioSource if available
-        if (audioSource != null)
-        {
-            audioSource.PlayOneShot(ParrySound);
-        }
-
+        if (audioSource != null) audioSource.PlayOneShot(ParrySound);
     }
 }

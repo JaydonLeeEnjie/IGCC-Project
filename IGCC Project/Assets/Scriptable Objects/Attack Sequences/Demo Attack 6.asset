@@ -10,44 +10,44 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 56da2f4a063b6fc40a9abe6f18b04573, type: 3}
-  m_Name: Demo Attack 1
+  m_Name: Demo Attack 6
   m_EditorClassIdentifier: 
-  Name: Demo Attack 1
+  Name: Demo Attack 6
   projectiles:
-  - bulletType: 0
-    bulletPrefab: 0
+  - bulletType: 5
+    bulletPrefab: 2
     spawnTime: 0
     speed: 3
     angle: 0
     damage: 2
     ringTriggerScale: 0
-    holdCount: 0
-    holdSpacingUnits: 0
-  - bulletType: 0
-    bulletPrefab: 0
-    spawnTime: 1.5
+    holdCount: 10
+    holdSpacingUnits: 0.25
+  - bulletType: 5
+    bulletPrefab: 2
+    spawnTime: 2
     speed: 3
     angle: 90
     damage: 2
     ringTriggerScale: 0
-    holdCount: 0
-    holdSpacingUnits: 0
-  - bulletType: 0
-    bulletPrefab: 0
-    spawnTime: 3
+    holdCount: 10
+    holdSpacingUnits: 0.25
+  - bulletType: 5
+    bulletPrefab: 2
+    spawnTime: 4
     speed: 3
     angle: 180
     damage: 2
     ringTriggerScale: 0
-    holdCount: 0
-    holdSpacingUnits: 0
-  - bulletType: 0
-    bulletPrefab: 0
-    spawnTime: 4.5
+    holdCount: 10
+    holdSpacingUnits: 0.25
+  - bulletType: 5
+    bulletPrefab: 2
+    spawnTime: 6
     speed: 3
     angle: 270
     damage: 2
     ringTriggerScale: 0
-    holdCount: 0
-    holdSpacingUnits: 0
-  AttackSequenceEnd: 8
+    holdCount: 10
+    holdSpacingUnits: 0.25
+  AttackSequenceEnd: 10

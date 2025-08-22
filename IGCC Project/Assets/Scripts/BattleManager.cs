@@ -156,7 +156,7 @@ public class BattleManager : MonoBehaviour
         if (qteSuccess && currentAction == ActionType.Attack)
             enemy?.TakeDamage(currentAttack);
 
-        var sequence = enemy ? enemy.GetFirstSequence() : null;
+        var sequence = enemy ? enemy.GetNextSequence(/*random: false*/) : null;
         if (sequence == null || handT == null || ClockCenter == null)
         {
             inCombat = false;

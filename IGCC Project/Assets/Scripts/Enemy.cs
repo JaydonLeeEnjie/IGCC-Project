@@ -27,6 +27,7 @@ public class Enemy : MonoBehaviour
 
     private Coroutine uiRoutine;
     private int uiSessionId; // used to know if a newer drain started
+    private int sequenceCursor = 0;
 
     private void Start()
     {
@@ -137,32 +138,73 @@ public class Enemy : MonoBehaviour
         var prefab = bulletPrefabs.Count > 0 ? bulletPrefabs[idx] : null;
         if (prefab == null) return;
 
-        GameObject go;
-        Vector3 dir; // reuse for non-ring
+        // Base travel direction from clock + angle (bullets still travel inward)
+        float baseZ = center.eulerAngles.z;
+        float baseAngle = baseZ + data.Angle + clockOffsetDeg;
+        Vector3 dir = Quaternion.Euler(0f, 0f, baseAngle) * Vector3.right;
 
+        // RING: unchanged
         if (data.Type == BulletData.BulletType.Ring)
         {
-            // Spawn exactly at the clock center
-            go = Instantiate(prefab, center.position, Quaternion.identity);
-            // direction is irrelevant for rings; pass any vector, Init will ignore for ring
-            dir = Vector3.right;
+            var goR = Instantiate(prefab, center.position, Quaternion.identity);
+            var bR = goR.GetComponent<Bullet>();
+            if (bR != null) bR.Init(Vector3.right, data.Speed, data.Damage, data.Type, data.Ring);
+            else goR.transform.right = Vector3.right;
+            return;
         }
-        else
+
+        // HOLD: spawn a line ALONG the travel direction (collinear with velocity)
+        if (data.Type == BulletData.BulletType.Hold)
         {
-            // Compute world angle normally for traveling bullets
-            float baseZ = center.eulerAngles.z;
-            float worldAngle = baseZ + data.Angle + clockOffsetDeg;
-            dir = Quaternion.Euler(0f, 0f, worldAngle) * Vector3.right;
+            int count = data.HoldCount;            // from BulletData
+            float spacing = data.HoldSpacingUnits;     // world units between bullets
 
-            // spawn on the ring around the center (your previous behavior)
-            Vector3 spawnPos = center.position + dir.normalized * spawnRadius;
-            go = Instantiate(prefab, spawnPos, Quaternion.identity);
+            // Usual ring spawn position
+            Vector3 lineCenter = center.position + dir.normalized * spawnRadius;
+
+            // Travel direction is toward the clock center (your bullets move along -dir)
+            Vector3 travelAxis = (-dir).normalized;
+            float half = 0.5f * (count - 1);
+            for (int i = 0; i < count; i++)
+            {
+                float offsetIdx = i - half;
+                Vector3 spawnPos = lineCenter + travelAxis * (offsetIdx * spacing);
+
+                var go = Instantiate(prefab, spawnPos, Quaternion.identity);
+                var bullet = go.GetComponent<Bullet>();
+                if (bullet != null)
+                    bullet.Init(dir, data.Speed, data.Damage, data.Type, 0f); // ring scale not used for Hold
+                else
+                    go.transform.right = dir; // keep sprite facing travel direction setup
+            }
+            return;
         }
 
-        var bullet = go.GetComponent<Bullet>();
-        if (bullet != null)
-            bullet.Init(dir, data.Speed, data.Damage, data.Type, data.Ring);
-        else
-            go.transform.right = dir; // at least orient non-ring
+
+        // Others (Normal/Weak/DontHit/Click): single spawn as before
+        {
+            Vector3 spawnPos = center.position + dir.normalized * spawnRadius;
+            var go = Instantiate(prefab, spawnPos, Quaternion.identity);
+            var bullet = go.GetComponent<Bullet>();
+            if (bullet != null)
+                bullet.Init(dir, data.Speed, data.Damage, data.Type, 0f);
+            else
+                go.transform.right = dir;
+        }
     }
+
+    public EnemyAttackSequence GetNextSequence(bool random = false)
+    {
+        if (attackPattern == null || attackPattern.Count == 0) return null;
+
+        if (random)
+            return attackPattern[Random.Range(0, attackPattern.Count)];
+
+        var s = attackPattern[sequenceCursor];
+        sequenceCursor = (sequenceCursor + 1) % attackPattern.Count; // advance & wrap
+        return s;
+    }
+
+
+
 }
