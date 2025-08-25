@@ -51,6 +51,15 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private bool hasBeenHit;
     [SerializeField] private ActionType currentAction;
 
+    [Header("DangerZone")]
+    [SerializeField] private List<Sprite> numberSprites = new List<Sprite>();
+    [SerializeField] private GameObject dangerZone;
+    [SerializeField] private List<float> numberAngles = new List<float>();
+    [SerializeField] private Image numberSprite;
+    [SerializeField] private DangerZone dangerZoneScript; // assign the component on 'dangerZone' GO
+
+
+
     [Header("Smoothing")]
     [SerializeField] private float rotationSmoothing = 15f;
 
@@ -306,6 +315,53 @@ public class BattleManager : MonoBehaviour
             case ArrowDir.Left: return LeftArrow;
             case ArrowDir.Right: return RightArrow;
             default: return null;
+        }
+    }
+
+    public void TriggerDangerZone(float preDelay, float activeDuration, float dps)
+    {
+        StartCoroutine(DangerZoneRoutine(preDelay, activeDuration, dps));
+    }
+
+    private IEnumerator DangerZoneRoutine(float preDelay, float activeDuration, float dps)
+    {
+        // Pick 1..12 inclusive
+        int n = Random.Range(1, 13);
+        int idx = n - 1;
+
+        // Show number sprite
+        if (numberSprite != null)
+        {
+            if (numberSprites != null && idx >= 0 && idx < numberSprites.Count && numberSprites[idx] != null)
+                numberSprite.sprite = numberSprites[idx];
+            numberSprite.gameObject.SetActive(true);
+        }
+
+        // Wait pre-delay
+        yield return new WaitForSeconds(preDelay);
+
+        // Hide number, show zone at mapped angle
+        if (numberSprite != null) numberSprite.gameObject.SetActive(false);
+
+        if (dangerZone != null)
+        {
+            float zAngle;
+            if (numberAngles != null && idx >= 0 && idx < numberAngles.Count)
+                zAngle = numberAngles[idx];
+            else
+                zAngle = idx * 30f; // fallback: 12 slices around the clock
+
+            dangerZone.transform.rotation = Quaternion.Euler(0f, 0f, zAngle);
+
+            // configure DPS and activate
+            if (!dangerZoneScript) dangerZoneScript = dangerZone.GetComponent<DangerZone>();
+            if (dangerZoneScript) dangerZoneScript.Configure(dps);
+
+            dangerZone.SetActive(true);
+
+            yield return new WaitForSeconds(activeDuration);
+
+            dangerZone.SetActive(false);
         }
     }
 }

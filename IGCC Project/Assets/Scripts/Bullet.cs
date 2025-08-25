@@ -24,6 +24,11 @@ public class Bullet : MonoBehaviour
     [Header("Click Settings")]
     [SerializeField] private float clickColliderSizeMultiplier = 1.5f;
 
+    // === Global speed multiplier (0..2x) ===
+    private static float s_globalSpeed = 1f;
+    public static float GlobalSpeedMultiplier => s_globalSpeed;
+    public static void SetGlobalSpeedMultiplier(float m) => s_globalSpeed = Mathf.Clamp(m, 0f, 2f);
+
     public BulletData.BulletType Type { get; private set; }
     public float Damage { get; private set; }
 
@@ -101,7 +106,7 @@ public class Bullet : MonoBehaviour
         if (Type == BulletData.BulletType.Ring)
         {
             Vector3 s = transform.localScale;
-            float ds = shrinkSpeed * Time.deltaTime;
+            float ds = shrinkSpeed * Time.deltaTime * GlobalSpeedMultiplier; // apply 0..2x
             s.x = Mathf.Max(0f, s.x - ds);
             s.y = Mathf.Max(0f, s.y - ds);
             transform.localScale = s;
@@ -131,6 +136,6 @@ public class Bullet : MonoBehaviour
         }
 
         // Normal/Weak/DontHit/Click/Hold movement
-        transform.position += velocity * Time.deltaTime;
+        transform.position += velocity * Time.deltaTime * GlobalSpeedMultiplier; // << apply slow
     }
 }
