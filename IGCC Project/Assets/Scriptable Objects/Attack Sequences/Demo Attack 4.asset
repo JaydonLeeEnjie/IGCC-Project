@@ -17,28 +17,58 @@ MonoBehaviour:
   - bulletType: 3
     bulletPrefab: 1
     spawnTime: 0
-    speed: 5
+    speed: 2
     angle: 0
-    damage: 2
-    ringTriggerScale: 6.25
+    damage: 20
+    isDangerZone: 0
+    dzPreDelay: 1
+    dzActiveDuration: 2
+    dzDamagePerSecond: 10
+    isTimeSlowDown: 0
+    slowPercent: 50
+    slowDuration: 2
+    isTimeSpeedUp: 0
+    speedUpPercent: 50
+    speedUpDuration: 2
+    ringTriggerScale: 0.7
     holdCount: 0
     holdSpacingUnits: 0
   - bulletType: 3
     bulletPrefab: 1
     spawnTime: 1
-    speed: 5
+    speed: 2
     angle: 0
-    damage: 2
-    ringTriggerScale: 6.25
+    damage: 20
+    isDangerZone: 0
+    dzPreDelay: 1
+    dzActiveDuration: 2
+    dzDamagePerSecond: 10
+    isTimeSlowDown: 0
+    slowPercent: 50
+    slowDuration: 2
+    isTimeSpeedUp: 0
+    speedUpPercent: 50
+    speedUpDuration: 2
+    ringTriggerScale: 0.7
     holdCount: 0
     holdSpacingUnits: 0
   - bulletType: 3
     bulletPrefab: 1
     spawnTime: 2
-    speed: 5
+    speed: 2
     angle: 0
-    damage: 2
-    ringTriggerScale: 6.25
+    damage: 20
+    isDangerZone: 0
+    dzPreDelay: 1
+    dzActiveDuration: 2
+    dzDamagePerSecond: 10
+    isTimeSlowDown: 0
+    slowPercent: 50
+    slowDuration: 2
+    isTimeSpeedUp: 0
+    speedUpPercent: 50
+    speedUpDuration: 2
+    ringTriggerScale: 0.7
     holdCount: 0
     holdSpacingUnits: 0
-  AttackSequenceEnd: 6
+  AttackSequenceEnd: 10

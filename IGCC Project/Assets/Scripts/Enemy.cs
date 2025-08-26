@@ -13,6 +13,8 @@ public class Enemy : MonoBehaviour
     [SerializeField] public float currentHealth;
     [SerializeField] public float maxHealth = 100f;
     [SerializeField] public bool isDead;
+    [SerializeField] private List<Animator> animators = new();
+    [SerializeField] private BattleManager battleManager;
 
 
     [Header("Spawn")]
@@ -37,6 +39,10 @@ public class Enemy : MonoBehaviour
         currentHealth = Mathf.Clamp(currentHealth <= 0 ? maxHealth : currentHealth, 0, maxHealth);
         if (HealthBar) HealthBar.fillAmount = maxHealth > 0 ? currentHealth / maxHealth : 0f;
         if (EnemyUI) EnemyUI.SetActive(false);
+        //for (int i = 0; i < animators.Count; i++)
+        //{
+        //    animators[i].
+        //}
     }
 
     // === Public API you can call from BattleManager ===
@@ -88,6 +94,11 @@ public class Enemy : MonoBehaviour
             yield return null;
         }
         HealthBar.fillAmount = toFill;
+        if (currentHealth <= 0f)
+        {
+            battleManager.FreezeBattle();
+        }
+
 
         // Hold UI for a bit, then hide if no newer drain started
         yield return new WaitForSecondsRealtime(uiHoldAfterDrain);

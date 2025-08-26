@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 762414159977971505}
   - component: {fileID: 5758295742190280509}
   - component: {fileID: 6749790153288451788}
+  - component: {fileID: 2772674943418352072}
   m_Layer: 3
   m_Name: Ring
   m_TagString: Untagged
@@ -30,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: -7.19}
-  m_LocalScale: {x: 25, y: 25, z: 25}
+  m_LocalScale: {x: 3.63, y: 3.63, z: 3.63}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -79,12 +80,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 385b98413bbddbe40b196838c04bd841, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b92e930044ad014479a3d6afb12f9853, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.32, y: 0.32}
+  m_Size: {x: 5, y: 5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -125,7 +126,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.14
+  m_Radius: 6.02
 --- !u!50 &5758295742190280509
 Rigidbody2D:
   serializedVersion: 5
@@ -177,3 +178,25 @@ MonoBehaviour:
   ringAllowHold: 1
   ringDebug: 0
   clickColliderSizeMultiplier: 1.5
+--- !u!95 &2772674943418352072
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8829942511753953119}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 64d10a13ebaeb3041869eb4e7451665e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

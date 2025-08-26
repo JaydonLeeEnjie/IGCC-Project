@@ -40,6 +40,9 @@ public class BulletData
     [Header("Hold Line Settings")]
     [Min(1)][SerializeField] private int holdCount = 3;
     [Min(0f)][SerializeField] private float holdSpacingUnits = 1.0f;
+
+    [Header("Animation")]
+    [SerializeField] private string animation;
     public BulletType Type => bulletType;
     public int BulletPrefabIndex => bulletPrefab;
     public float SpawnTime => spawnTime;
@@ -69,4 +72,5 @@ public class BulletData
     public float SlowMultiplier => Mathf.Clamp01(1f - (slowPercent / 100f));
 
     public float SpeedUpMultiplier => Mathf.Clamp(1f + (speedUpPercent / 100f), 0f, 2f);       // 0..2 (max 200%)
+    public string Animation => animation;
 }

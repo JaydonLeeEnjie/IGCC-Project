@@ -1,0 +1,197 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56da2f4a063b6fc40a9abe6f18b04573, type: 3}
+  m_Name: Ring and Click Attack
+  m_EditorClassIdentifier: 
+  Name: 
+  projectiles:
+  - bulletType: 3
+    bulletPrefab: 1
+    spawnTime: 0
+    speed: 1
+    angle: 0
+    damage: 5
+    isDangerZone: 0
+    dzPreDelay: 0
+    dzActiveDuration: 0
+    dzDamagePerSecond: 0
+    isTimeSlowDown: 0
+    slowPercent: 0
+    slowDuration: 0
+    isTimeSpeedUp: 0
+    speedUpPercent: 0
+    speedUpDuration: 0
+    ringTriggerScale: 0.7
+    holdCount: 0
+    holdSpacingUnits: 0
+    animation: 
+  - bulletType: 3
+    bulletPrefab: 1
+    spawnTime: 1.5
+    speed: 1
+    angle: 0
+    damage: 5
+    isDangerZone: 0
+    dzPreDelay: 0
+    dzActiveDuration: 0
+    dzDamagePerSecond: 0
+    isTimeSlowDown: 0
+    slowPercent: 0
+    slowDuration: 0
+    isTimeSpeedUp: 0
+    speedUpPercent: 0
+    speedUpDuration: 0
+    ringTriggerScale: 0.7
+    holdCount: 0
+    holdSpacingUnits: 0
+    animation: 
+  - bulletType: 3
+    bulletPrefab: 1
+    spawnTime: 3
+    speed: 1
+    angle: 0
+    damage: 5
+    isDangerZone: 0
+    dzPreDelay: 0
+    dzActiveDuration: 0
+    dzDamagePerSecond: 0
+    isTimeSlowDown: 0
+    slowPercent: 0
+    slowDuration: 0
+    isTimeSpeedUp: 0
+    speedUpPercent: 0
+    speedUpDuration: 0
+    ringTriggerScale: 0.7
+    holdCount: 0
+    holdSpacingUnits: 0
+    animation: 
+  - bulletType: 3
+    bulletPrefab: 1
+    spawnTime: 4.5
+    speed: 1
+    angle: 0
+    damage: 5
+    isDangerZone: 0
+    dzPreDelay: 0
+    dzActiveDuration: 0
+    dzDamagePerSecond: 0
+    isTimeSlowDown: 0
+    slowPercent: 0
+    slowDuration: 0
+    isTimeSpeedUp: 0
+    speedUpPercent: 0
+    speedUpDuration: 0
+    ringTriggerScale: 0.7
+    holdCount: 0
+    holdSpacingUnits: 0
+    animation: 
+  - bulletType: 4
+    bulletPrefab: 0
+    spawnTime: 0.5
+    speed: 2
+    angle: 173
+    damage: 5
+    isDangerZone: 0
+    dzPreDelay: 0
+    dzActiveDuration: 0
+    dzDamagePerSecond: 0
+    isTimeSlowDown: 0
+    slowPercent: 0
+    slowDuration: 0
+    isTimeSpeedUp: 0
+    speedUpPercent: 0
+    speedUpDuration: 0
+    ringTriggerScale: 0.7
+    holdCount: 0
+    holdSpacingUnits: 0
+    animation: 
+  - bulletType: 4
+    bulletPrefab: 0
+    spawnTime: 1.5
+    speed: 2
+    angle: 14
+    damage: 5
+    isDangerZone: 0
+    dzPreDelay: 0
+    dzActiveDuration: 0
+    dzDamagePerSecond: 0
+    isTimeSlowDown: 0
+    slowPercent: 0
+    slowDuration: 0
+    isTimeSpeedUp: 0
+    speedUpPercent: 0
+    speedUpDuration: 0
+    ringTriggerScale: 0.7
+    holdCount: 0
+    holdSpacingUnits: 0
+    animation: 
+  - bulletType: 4
+    bulletPrefab: 0
+    spawnTime: 2.5
+    speed: 2
+    angle: 194
+    damage: 5
+    isDangerZone: 0
+    dzPreDelay: 0
+    dzActiveDuration: 0
+    dzDamagePerSecond: 0
+    isTimeSlowDown: 0
+    slowPercent: 0
+    slowDuration: 0
+    isTimeSpeedUp: 0
+    speedUpPercent: 0
+    speedUpDuration: 0
+    ringTriggerScale: 0.7
+    holdCount: 0
+    holdSpacingUnits: 0
+    animation: 
+  - bulletType: 4
+    bulletPrefab: 0
+    spawnTime: 3.5
+    speed: 2
+    angle: 56
+    damage: 5
+    isDangerZone: 0
+    dzPreDelay: 0
+    dzActiveDuration: 0
+    dzDamagePerSecond: 0
+    isTimeSlowDown: 0
+    slowPercent: 0
+    slowDuration: 0
+    isTimeSpeedUp: 0
+    speedUpPercent: 0
+    speedUpDuration: 0
+    ringTriggerScale: 0.7
+    holdCount: 0
+    holdSpacingUnits: 0
+    animation: 
+  - bulletType: 4
+    bulletPrefab: 0
+    spawnTime: 4.5
+    speed: 2
+    angle: 216
+    damage: 5
+    isDangerZone: 0
+    dzPreDelay: 0
+    dzActiveDuration: 0
+    dzDamagePerSecond: 0
+    isTimeSlowDown: 0
+    slowPercent: 0
+    slowDuration: 0
+    isTimeSpeedUp: 0
+    speedUpPercent: 0
+    speedUpDuration: 0
+    ringTriggerScale: 0.7
+    holdCount: 0
+    holdSpacingUnits: 0
+    animation: 
+  AttackSequenceEnd: 12

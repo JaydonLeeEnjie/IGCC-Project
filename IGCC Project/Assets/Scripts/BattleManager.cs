@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class BattleManager : MonoBehaviour
@@ -23,6 +24,7 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private Enemy enemy;
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip HitSound;
+    [SerializeField] private GameObject RetryBackground;
 
     [Header("QTE UI")]
     [SerializeField] private GameObject QTE;
@@ -50,6 +52,7 @@ public class BattleManager : MonoBehaviour
     [SerializeField] public bool inCombat;
     [SerializeField] private bool hasBeenHit;
     [SerializeField] private ActionType currentAction;
+    [SerializeField] public bool isDead = false;
 
     [Header("DangerZone")]
     [SerializeField] private List<Sprite> numberSprites = new List<Sprite>();
@@ -103,7 +106,18 @@ public class BattleManager : MonoBehaviour
         if (handT != null && moveAction != null && inCombat)
             HandleHandMovement();
 
-        Options.SetActive(!inCombat && !enemy.isDead && currentHealth > 0);
+        if (inCombat)
+        {
+            Options.SetActive(false);
+        }
+        else
+        {
+            Options.SetActive(true);
+        }
+        if (enemy.isDead || isDead)
+        {
+            Options.SetActive(false );
+        }
         Healthbar.fillAmount = (maxHealth > 0f) ? (currentHealth / maxHealth) : 0f;
     }
 
@@ -145,12 +159,7 @@ public class BattleManager : MonoBehaviour
 
     private void StartPlayerChoice(ActionType type)
     {
-        if (enemy == null || enemy.currentHealth <= 0f)
-        {
-            FreezeBattle();
-            return;
-        }
-
+       
         inCombat = true;
         Options.SetActive(false);
 
@@ -170,11 +179,6 @@ public class BattleManager : MonoBehaviour
             enemy?.TakeDamage(currentAttack);
 
 
-        if (enemy == null || enemy.currentHealth <= 0f)
-        {
-            FreezeBattle();
-            yield break;
-        }
 
         var sequence = enemy ? enemy.GetNextSequence() : null;
         if (sequence == null || handT == null || ClockCenter == null)
@@ -221,7 +225,9 @@ public class BattleManager : MonoBehaviour
 
         if (currentHealth <= 0f)
         {
+            isDead = true;
             FreezeBattle();
+            Lose();
             return;
         }
     }
@@ -383,7 +389,7 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    private void FreezeBattle()
+    public void FreezeBattle()
     {
         // Stop all coroutines in the BattleManager (QTE, timers, etc.)
         StopAllCoroutines();
@@ -401,9 +407,17 @@ public class BattleManager : MonoBehaviour
         Debug.Log("[BattleManager] Battle frozen.");
     }
     
-    public void Win()
+    public void Lose()
     {
-        // Placeholder: fill this in later with win screen, level progression, etc.
-        Debug.Log("You Win!");
+        RetryBackground.SetActive(true);
+    }
+
+    public void RestartScene()
+    {
+        // Get the currently active scene
+        Scene currentScene = SceneManager.GetActiveScene();
+
+        // Reload it
+        SceneManager.LoadScene(currentScene.name);
     }
 }
