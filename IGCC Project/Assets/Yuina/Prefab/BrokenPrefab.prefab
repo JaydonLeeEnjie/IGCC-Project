@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7685336128350763672}
   - component: {fileID: 6644428357030119052}
   - component: {fileID: 4629951514157678773}
+  - component: {fileID: -7771194636412111008}
   m_Layer: 0
   m_Name: BrokenPrefab
   m_TagString: Untagged
@@ -86,3 +87,15 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &-7771194636412111008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7122833115930273929}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7253a34f96f719d4096f973cebbc953c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

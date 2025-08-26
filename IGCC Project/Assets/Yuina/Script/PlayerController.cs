@@ -86,7 +86,7 @@ public class PlayerController : MonoBehaviour
     {
         currentHeldBook = book;
         book.transform.SetParent(transform);
-        book.transform.localPosition = new Vector3(0, 1.5f, 0); // ì™è„Ç…ïÇÇ©ÇπÇÈ
+        book.transform.localPosition = new Vector3(0, 2, 0); // ì™è„Ç…ïÇÇ©ÇπÇÈ
         book.transform.localRotation = Quaternion.identity;
     }
 
