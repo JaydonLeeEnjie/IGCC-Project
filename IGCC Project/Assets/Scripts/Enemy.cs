@@ -134,6 +134,25 @@ public class Enemy : MonoBehaviour
     {
         if (data == null) return;
 
+        if (data.IsTimeSlowDown)
+        {
+            TimeSlowManager.Ensure().ApplyBulletScale(data.SlowMultiplier, data.SlowDuration);
+            return;
+        }
+        if (data.IsTimeSpeedUp)
+        {
+            TimeSlowManager.Ensure().ApplyBulletScale(data.SpeedUpMultiplier, data.SpeedUpDuration);
+            return;
+        }
+
+        if (data.IsDangerZone)
+        {
+            // Ask the BattleManager to run the special
+            var bm = FindObjectOfType<BattleManager>(); // or serialize a reference on Enemy if you prefer
+            bm?.TriggerDangerZone(data.DZPreDelay, data.DZActiveDuration, data.DZDamagePerSecond);
+            return;
+        }
+
         int idx = Mathf.Clamp(data.BulletPrefabIndex, 0, bulletPrefabs.Count - 1);
         var prefab = bulletPrefabs.Count > 0 ? bulletPrefabs[idx] : null;
         if (prefab == null) return;
