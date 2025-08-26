@@ -3,41 +3,39 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    // --- シングルトン追加 ---
     public static PlayerController Instance { get; private set; }
 
-    private float m_speed = 5.0f;
-    private InputAction m_moveAction;
-    private SpriteRenderer m_spriteRenderer;
+    private float speed = 5.0f;
+    private InputAction moveAction;
+    private SpriteRenderer spriteRenderer;
 
     private bool canMove = true;
     private DialogueTrigger currentTrigger;
 
+    // --- 本関連 ---
+    private Book currentHeldBook = null;
+    private Book nearbyBook = null;
+    private Bookshelf nearbyShelf = null;
+
     void Awake()
     {
-        // シングルトンのセット
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
     }
 
     void Start()
     {
-        m_moveAction = InputSystem.actions.FindAction("Move");
-        m_moveAction.Enable();
+        moveAction = InputSystem.actions.FindAction("Move");
+        moveAction.Enable();
 
-        m_spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     void Update()
     {
         if (Keyboard.current.enterKey.wasPressedThisFrame)
         {
+            // --- ダイアログ ---
             if (currentTrigger != null && currentTrigger.IsPlayerInRange())
             {
                 if (!DialogueManager.Instance.IsDialogueActive)
@@ -49,29 +47,63 @@ public class PlayerController : MonoBehaviour
                 {
                     DialogueManager.Instance.DisplayNextSentence();
                 }
+                return;
+            }
+
+            // --- 本を拾う ---
+            if (currentHeldBook == null && nearbyBook != null && !nearbyBook.isPlaced)
+            {
+                PickUpBook(nearbyBook);
+                return;
+            }
+
+            // --- 本を棚に置く ---
+            if (currentHeldBook != null && nearbyShelf != null)
+            {
+                if (nearbyShelf.TryPlaceBook(currentHeldBook))
+                {
+                    currentHeldBook = null;
+                }
+                return;
             }
         }
 
         if (canMove)
         {
-            var moveValue = m_moveAction.ReadValue<Vector2>();
-            var move = new Vector3(moveValue.x, 0f, moveValue.y) * m_speed * Time.deltaTime;
+            var moveValue = moveAction.ReadValue<Vector2>();
+            var move = new Vector3(moveValue.x, 0f, moveValue.y) * speed * Time.deltaTime;
             transform.Translate(move);
 
-            if (moveValue.x > 0.01f)
-            {
-                m_spriteRenderer.flipX = true;
-            }
-            else if (moveValue.x < -0.01f)
-            {
-                m_spriteRenderer.flipX = false;
-            }
+            if (moveValue.x > 0.01f) spriteRenderer.flipX = true;
+            else if (moveValue.x < -0.01f) spriteRenderer.flipX = false;
         }
     }
 
-    public void SetCanMove(bool value)
+    public void SetCanMove(bool value) => canMove = value;
+
+    // --- 本を持つ処理 ---
+    private void PickUpBook(Book book)
     {
-        canMove = value;
+        currentHeldBook = book;
+        book.transform.SetParent(transform);
+        book.transform.localPosition = new Vector3(0, 1.5f, 0); // 頭上に浮かせる
+        book.transform.localRotation = Quaternion.identity;
+    }
+
+    public void SetNearbyBook(Book book) => nearbyBook = book;
+    public void ClearNearbyBook(Book book)
+    {
+        if (nearbyBook == book) nearbyBook = null;
+    }
+        public void SetNearbyShelf(Bookshelf shelf)
+    {
+        nearbyShelf = shelf;
+    }
+
+    public void ClearNearbyShelf(Bookshelf shelf)
+    {
+        if (nearbyShelf == shelf)
+            nearbyShelf = null;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -80,6 +112,11 @@ public class PlayerController : MonoBehaviour
         {
             currentTrigger = trigger;
         }
+
+        if (other.TryGetComponent<Bookshelf>(out Bookshelf shelf))
+        {
+            nearbyShelf = shelf;
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -87,6 +124,11 @@ public class PlayerController : MonoBehaviour
         if (other.TryGetComponent<DialogueTrigger>(out DialogueTrigger trigger))
         {
             if (currentTrigger == trigger) currentTrigger = null;
+        }
+
+        if (other.TryGetComponent<Bookshelf>(out Bookshelf shelf))
+        {
+            if (nearbyShelf == shelf) nearbyShelf = null;
         }
     }
 }
