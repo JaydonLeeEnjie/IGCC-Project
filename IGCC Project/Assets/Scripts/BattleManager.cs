@@ -103,7 +103,7 @@ public class BattleManager : MonoBehaviour
         if (handT != null && moveAction != null && inCombat)
             HandleHandMovement();
 
-        Options.SetActive(!inCombat);
+        Options.SetActive(!inCombat && !enemy.isDead && currentHealth > 0);
         Healthbar.fillAmount = (maxHealth > 0f) ? (currentHealth / maxHealth) : 0f;
     }
 
@@ -145,11 +145,15 @@ public class BattleManager : MonoBehaviour
 
     private void StartPlayerChoice(ActionType type)
     {
-        // Lock into combat and hide options
+        if (enemy == null || enemy.currentHealth <= 0f)
+        {
+            FreezeBattle();
+            return;
+        }
+
         inCombat = true;
         Options.SetActive(false);
 
-        // Kick off the QTE first; after QTE, enemy will attack and action effects apply/fail.
         StartCoroutine(QTE_Then_EnemyAttack(type));
     }
 
@@ -165,13 +169,21 @@ public class BattleManager : MonoBehaviour
         if (qteSuccess && currentAction == ActionType.Attack)
             enemy?.TakeDamage(currentAttack);
 
-        var sequence = enemy ? enemy.GetNextSequence(/*random: false*/) : null;
+
+        if (enemy == null || enemy.currentHealth <= 0f)
+        {
+            FreezeBattle();
+            yield break;
+        }
+
+        var sequence = enemy ? enemy.GetNextSequence() : null;
         if (sequence == null || handT == null || ClockCenter == null)
         {
             inCombat = false;
             Options.SetActive(true);
             yield break;
         }
+
         enemy.RunAttackSequence(sequence, ClockCenter, clockAngleOffsetForBullets, OnEnemySequenceComplete);
     }
 
@@ -206,6 +218,12 @@ public class BattleManager : MonoBehaviour
         Healthbar.fillAmount = (maxHealth > 0f) ? (currentHealth / maxHealth) : 0f;
         hasBeenHit = true;
         audioSource.PlayOneShot(HitSound);
+
+        if (currentHealth <= 0f)
+        {
+            FreezeBattle();
+            return;
+        }
     }
 
     // =========================
@@ -363,5 +381,29 @@ public class BattleManager : MonoBehaviour
 
             dangerZone.SetActive(false);
         }
+    }
+
+    private void FreezeBattle()
+    {
+        // Stop all coroutines in the BattleManager (QTE, timers, etc.)
+        StopAllCoroutines();
+
+        // Tell the enemy to stop its own attack sequence
+        if (enemy != null)
+        {
+            enemy.StopAllCoroutines();   // kills any coroutines started in Enemy
+
+        }
+
+        inCombat = false;
+        Options.SetActive(false);
+
+        Debug.Log("[BattleManager] Battle frozen.");
+    }
+    
+    public void Win()
+    {
+        // Placeholder: fill this in later with win screen, level progression, etc.
+        Debug.Log("You Win!");
     }
 }

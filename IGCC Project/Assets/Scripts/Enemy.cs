@@ -12,6 +12,8 @@ public class Enemy : MonoBehaviour
     [SerializeField] private List<GameObject> bulletPrefabs = new();
     [SerializeField] public float currentHealth;
     [SerializeField] public float maxHealth = 100f;
+    [SerializeField] public bool isDead;
+
 
     [Header("Spawn")]
     [SerializeField] private float spawnRadius = 10f;
@@ -90,9 +92,16 @@ public class Enemy : MonoBehaviour
         // Hold UI for a bit, then hide if no newer drain started
         yield return new WaitForSecondsRealtime(uiHoldAfterDrain);
         if (myId == uiSessionId)
+        {
             EnemyUI.SetActive(false);
+            if (currentHealth <= 0f)
+            {
+                isDead = true;
+            }
+        }
 
         uiRoutine = null;
+
     }
 
     // --- Your existing sequence code (unchanged) ---
@@ -223,6 +232,8 @@ public class Enemy : MonoBehaviour
         sequenceCursor = (sequenceCursor + 1) % attackPattern.Count; // advance & wrap
         return s;
     }
+
+
 
 
 
