@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour
     private Book currentHeldBook = null;
     private Book nearbyBook = null;
     private Bookshelf nearbyShelf = null;
+    [SerializeField]private Animator animator;
 
     void Awake()
     {
@@ -74,9 +75,23 @@ public class PlayerController : MonoBehaviour
             var move = new Vector3(moveValue.x, 0f, moveValue.y) * speed * Time.deltaTime;
             transform.Translate(move);
 
+
             if (moveValue.x > 0.01f) spriteRenderer.flipX = true;
             else if (moveValue.x < -0.01f) spriteRenderer.flipX = false;
+
+        
         }
+        var MoveValue = moveAction.ReadValue<Vector2>();
+        if (MoveValue.x != 0 || MoveValue.y != 0)
+        {
+            animator.SetBool("IsWalking", true);
+        }
+        else if(MoveValue.x == 0 && MoveValue.y == 0)
+        {
+            animator.SetBool("IsWalking", false);
+        }
+
+
     }
 
     public void SetCanMove(bool value) => canMove = value;
