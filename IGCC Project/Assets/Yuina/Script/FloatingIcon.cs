@@ -29,7 +29,7 @@ public class FloatingIcon : MonoBehaviour
         transform.rotation = Quaternion.LookRotation(mainCam.transform.forward, Vector3.up);
 
         // ワールドスケールを固定する
-        Vector3 desiredWorldScale = Vector3.one * 3; // サイズ
+        Vector3 desiredWorldScale = Vector3.one * 1.0f; // サイズ
         transform.localScale = Vector3.one; // まずリセット
         transform.localScale = new Vector3(
             desiredWorldScale.x / transform.lossyScale.x,
