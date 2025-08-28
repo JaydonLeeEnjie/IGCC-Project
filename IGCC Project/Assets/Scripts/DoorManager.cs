@@ -63,8 +63,11 @@ public class DoorManager : MonoBehaviour
             BossText.gameObject.SetActive(false);
         }
 
-        // Save current scene
+        // Save current scene and player position
         PlayerPrefs.SetString("LastScene", SceneManager.GetActiveScene().name);
+        PlayerPrefs.SetFloat("PlayerPosX", player.transform.position.x);
+        PlayerPrefs.SetFloat("PlayerPosY", player.transform.position.y);
+        PlayerPrefs.SetFloat("PlayerPosZ", player.transform.position.z);
 
         // Load boss scene
         SceneManager.LoadScene(BossSceneName);

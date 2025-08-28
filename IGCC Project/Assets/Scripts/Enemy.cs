@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
@@ -15,7 +16,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] public bool isDead;
     [SerializeField] private List<Animator> animators = new();
     [SerializeField] private BattleManager battleManager;
-
+    private bool isPlayingHurt = false; // flag to indicate Hurt animation is active
 
     [Header("Spawn")]
     [SerializeField] private float spawnRadius = 10f;
@@ -39,22 +40,40 @@ public class Enemy : MonoBehaviour
         currentHealth = Mathf.Clamp(currentHealth <= 0 ? maxHealth : currentHealth, 0, maxHealth);
         if (HealthBar) HealthBar.fillAmount = maxHealth > 0 ? currentHealth / maxHealth : 0f;
         if (EnemyUI) EnemyUI.SetActive(false);
-        //for (int i = 0; i < animators.Count; i++)
-        //{
-        //    animators[i].
-        //}
     }
 
     // === Public API you can call from BattleManager ===
     public void TakeDamage(float amount)
     {
-        if (amount <= 0f) return;
+        if (amount <= 0f || isDead) return;
 
-        float oldHealth = currentHealth;
         currentHealth = Mathf.Max(0f, currentHealth - amount);
 
-        // Start (or restart) the drain UI from the CURRENT displayed fill
+        if (animators != null)
+        {
+            foreach (var anim in animators)
+            {
+                if (anim != null)
+                {
+                    isPlayingHurt = true;
+                    anim.Play("Hurt", 0, 0f);
+                }
+            }
+        }
+
+        // Start a coroutine to reset the hurt flag when animation ends
+        StartCoroutine(HurtAnimationRoutine());
+
         StartHealthDrainUI(amount);
+    }
+
+    private IEnumerator HurtAnimationRoutine()
+    {
+        // Assuming your hurt animation length is 0.5 seconds; adjust to match your animation
+        float hurtLength = 0.5f;
+        yield return new WaitForSeconds(hurtLength);
+
+        isPlayingHurt = false;
     }
 
     private void StartHealthDrainUI(float damageAmount)
@@ -67,21 +86,17 @@ public class Enemy : MonoBehaviour
 
         uiRoutine = StartCoroutine(DrainHealthbarRoutine(damageAmount));
     }
-
     private IEnumerator DrainHealthbarRoutine(float damageAmount)
     {
         uiSessionId++;
         int myId = uiSessionId;
 
-        // Show UI and update damage text
         EnemyUI.SetActive(true);
         if (DamageText) DamageText.text = $"-{Mathf.RoundToInt(damageAmount)}";
 
-        // Drain from what's currently displayed to the new health
         float fromFill = HealthBar.fillAmount;
         float toFill = (maxHealth > 0f) ? (currentHealth / maxHealth) : 0f;
 
-        // Compute duration based on how much fill we need to drain and the speed
         float delta = Mathf.Abs(fromFill - toFill);
         float duration = Mathf.Max(0.05f, delta / Mathf.Max(0.0001f, drainSpeed));
 
@@ -90,30 +105,52 @@ public class Enemy : MonoBehaviour
         {
             float p = t / duration;
             HealthBar.fillAmount = Mathf.Lerp(fromFill, toFill, p);
-            t += Time.unscaledDeltaTime; // UI usually ignores timescale
+            t += Time.unscaledDeltaTime;
             yield return null;
         }
         HealthBar.fillAmount = toFill;
-        if (currentHealth <= 0f)
+
+        if (currentHealth <= 0f && !isDead)
         {
+            isDead = true;
             battleManager.FreezeBattle();
+
+            // Play Die animation
+            foreach (var anim in animators)
+            {
+                if (anim) anim.Play("Die", 0, 0f);
+            }
+
+            // Wait for die animation to finish and return to original scene
+            StartCoroutine(WaitForDieAnimationAndReturn());
         }
 
-
-        // Hold UI for a bit, then hide if no newer drain started
         yield return new WaitForSecondsRealtime(uiHoldAfterDrain);
         if (myId == uiSessionId)
         {
-            EnemyUI.SetActive(false);
-            if (currentHealth <= 0f)
-            {
-                isDead = true;
-            }
+            if (!isDead) EnemyUI.SetActive(false);
         }
 
         uiRoutine = null;
-
     }
+
+    private IEnumerator WaitForDieAnimationAndReturn()
+    {
+        // Wait for die animation to finish (adjust time based on your animation length)
+        yield return new WaitForSeconds(2f);
+
+        // Return to the original scene
+        string lastScene = PlayerPrefs.GetString("LastScene");
+        if (!string.IsNullOrEmpty(lastScene))
+        {
+            SceneManager.LoadScene(lastScene);
+        }
+        else
+        {
+            Debug.LogWarning("No last scene saved in PlayerPrefs.");
+        }
+    }
+
 
     // --- Your existing sequence code (unchanged) ---
     public EnemyAttackSequence GetFirstSequence() => attackPattern.FirstOrDefault();
@@ -132,6 +169,19 @@ public class Enemy : MonoBehaviour
             yield break;
         }
 
+        // Wait if hurt animation is playing
+        while (isPlayingHurt)
+            yield return null;
+
+        // Play attack animation
+        string animName = (Random.value < 0.5f) ? "Cast Spell" : "Attack";
+        foreach (var animator in animators)
+        {
+            if (animator != null)
+                animator.Play(animName, 0, 0f);
+        }
+
+        // Existing bullet spawn logic
         var list = sequence.Projectiles.OrderBy(b => b.SpawnTime).ToList();
         int i = 0;
         float t = 0f;
@@ -149,6 +199,7 @@ public class Enemy : MonoBehaviour
 
         onComplete?.Invoke();
     }
+
 
     private void SpawnBullet(BulletData data, Transform center, float clockOffsetDeg)
     {
