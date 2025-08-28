@@ -14,6 +14,9 @@ public class PuzzleManager : MonoBehaviour
     [Header("Puzzle Trigger Cube (trigger object)")]
     [SerializeField] private GameObject puzzleTriggerCube; // ミニゲーム開始用の箱
 
+    [Header("Door Reference")]
+    [SerializeField] private DoorManager doorManager;   // クリアしたら開く扉
+
     private int totalPieces;     // 全パーツ数
     private int placedPieces;    // はまったパーツ数
     private PuzzlePiece[] allPieces; // 全PuzzlePieceの参照
@@ -79,6 +82,18 @@ public class PuzzleManager : MonoBehaviour
         {
             // 全部揃ったら演出開始
             StartCoroutine(FinishWithAnimation());
+
+            // パズルクリアをDoorManagerに通知
+            if (doorManager != null)
+            {
+                doorManager.PuzzleCompleted = true;
+                Debug.Log("Puzzle Completed! Door can now be opened.");
+            }
+            else
+            {
+                Debug.LogWarning("DoorManagerがPuzzleManagerに設定されていません！");
+            }
+
         }
     }
 

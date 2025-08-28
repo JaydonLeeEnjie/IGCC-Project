@@ -12,6 +12,9 @@ public class PuzzleManager_Books : MonoBehaviour
     [Header("Shelves Root")]
     [SerializeField] private GameObject shelves;
 
+    [Header("Door Reference")]
+    [SerializeField] private DoorManager doorManager;   // クリアしたら開く扉
+
     private int totalBooks;
     private int placedBooks;
 
@@ -44,6 +47,17 @@ public class PuzzleManager_Books : MonoBehaviour
         if (placedBooks >= totalBooks)
         {
             StartCoroutine(ShowCompleteText());
+
+            // パズルクリアをDoorManagerに通知
+            if (doorManager != null)
+            {
+                doorManager.PuzzleCompleted = true;
+                Debug.Log("Puzzle Completed! Door can now be opened.");
+            }
+            else
+            {
+                Debug.LogWarning("DoorManagerがPuzzleManager_Booksに設定されていません！");
+            }
         }
     }
 
