@@ -485,7 +485,7 @@ MonoBehaviour:
   - {fileID: 1894710291}
   - {fileID: 1208382475}
   - {fileID: 87217868}
-  displayTime: 10
+  displayTime: 6
   nextSceneName: Yuina Testing Scene
 --- !u!4 &1060931183
 Transform:
