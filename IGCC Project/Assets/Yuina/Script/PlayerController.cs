@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (Keyboard.current.enterKey.wasPressedThisFrame)
+        if (Keyboard.current.eKey.wasPressedThisFrame)
         {
             // --- ダイアログ ---
             if (currentTrigger != null && currentTrigger.IsPlayerInRange())

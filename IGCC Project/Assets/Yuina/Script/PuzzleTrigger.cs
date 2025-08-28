@@ -37,7 +37,7 @@ public class PuzzleTrigger : MonoBehaviour
 
     private void Update()
     {
-        if (playerInRange && Input.GetKeyDown(KeyCode.Return))
+        if (playerInRange && Input.GetKeyDown(KeyCode.E))
         {
             // ミニゲーム開始
             puzzleUI.SetActive(true);
